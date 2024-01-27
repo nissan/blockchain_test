@@ -11,7 +11,7 @@ Milestone 2:
 Milestone 3:
 
 - [X]  Create a new “My Tokens” page
-- [ ]  When clicking a card on the home page, add it to your “My Tokens” list
+- [X]  When clicking a card on the home page, add it to your “My Tokens” list
 - [X]  Navigating to your My Tokens page should show you all your favourited tokens
 - [X]  Use Zustand to persist the data across page loads
 
@@ -28,9 +28,7 @@ Milestone 5:
 
 Milestone 6:
 
-- [ ]  Add in the ability to delete/remove favourited items
-  - [X]  Backend
-  - [ ]  Frontend
+- [X]  Add in the ability to delete/remove favourited items
 
 # ReadMe
 
