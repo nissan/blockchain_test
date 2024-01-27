@@ -13,6 +13,7 @@ export const TokenInfoTable: React.FC<TokenInfoTableProps> = ({ tokens }) => {
                     <TableCaption>Token List</TableCaption>
                     <Thead>
                         <Tr>
+                            <Th>Favourite</Th>
                             <Th>Rank</Th>
                             <Th>Stats</Th>
                             <Th>Price</Th>
@@ -23,6 +24,7 @@ export const TokenInfoTable: React.FC<TokenInfoTableProps> = ({ tokens }) => {
                         {tokens.map((token) => (
                             <Tr key={token.id}>
                                 <TokenInfo
+                                    id = {token.id}
                                     rank={token.cmc_rank}
                                     icon={token.icon}
                                     symbol={token.symbol}
