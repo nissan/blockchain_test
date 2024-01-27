@@ -1,4 +1,4 @@
-import { Td, Tr, Wrap, WrapItem } from "@chakra-ui/react";
+import { Stat, StatArrow, StatHelpText, StatLabel, Td, Tr, Wrap, WrapItem } from "@chakra-ui/react";
 import Image from "next/image";
 
 type TokenInfoProps = {
@@ -15,37 +15,53 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ rank, icon, symbol, marketCap, pr
         <>
             <Td>{rank}</Td>
             <Td>
-                <Wrap>
-                    <WrapItem>
-                        <Image src={icon} alt={symbol} height={24} width={24} />
-                    </WrapItem>
-                    <WrapItem>
-                        {symbol}
-                    </WrapItem>
-                </Wrap>
+                <Stat>
+                    <StatLabel>
+                        <Wrap>
+                            <WrapItem>
+                                <Image src={icon} alt={symbol} height={24} width={24} />
+                            </WrapItem>
+                            <WrapItem>
+                                {symbol}
+                            </WrapItem>
+                        </Wrap>
+                    </StatLabel>
 
-                <Wrap>
-                    <WrapItem>
+                    <StatHelpText>
                         {formatAsBillions(marketCap)}
-                    </WrapItem>
-                </Wrap>
-
+                    </StatHelpText>
+                </Stat>
             </Td>
             <Td>
                 {formatAsCurrency(price)}
             </Td>
             <Td>
-                {percentage_change}
+                <Stat>
+                    <StatHelpText>
+                    {(percentage_change > 0) && <>
+                    <StatArrow type="increase" />
+                        {percentage_change}%
+                    </>}
+                    {(percentage_change < 0) && <>
+                    <StatArrow type="decrease" />
+                        {percentage_change}%
+                    </>}
+                    {(percentage_change == 0) && <>
+                        {percentage_change}%
+                    </>}
+                    </StatHelpText>
+                </Stat>
+                
             </Td>
         </>
     )
 }
 
-function formatAsBillions(marketCap:number) {
-    return `${marketCap/1000000000} Bn`
+function formatAsBillions(marketCap: number) {
+    return `${marketCap / 1000000000} Bn`
 }
 
-function formatAsCurrency(price:number) {
+function formatAsCurrency(price: number) {
     let USDollar = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
