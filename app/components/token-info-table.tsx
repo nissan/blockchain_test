@@ -15,13 +15,13 @@ export const TokenInfoTable: React.FC<TokenInfoTableProps> = ({ tokens }) => {
                         <Tr>
                             <Th>Rank</Th>
                             <Th>Stats</Th>
-                            <Th isNumeric>Price</Th>
+                            <Th>Price</Th>
                             <Th>% Change</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
                         {tokens.map((token) => (
-                            <div key={token.id}>
+                            <Tr key={token.id}>
                                 <TokenInfo
                                     rank={token.cmc_rank}
                                     icon={token.icon}
@@ -30,7 +30,7 @@ export const TokenInfoTable: React.FC<TokenInfoTableProps> = ({ tokens }) => {
                                     marketCap={token.market_cap.toString()}
                                     percentage_change={token.percent_change_1h}
                                 />
-                            </div>
+                            </Tr>
                         ))}     
                     </Tbody>
 

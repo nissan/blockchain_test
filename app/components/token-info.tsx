@@ -1,11 +1,11 @@
-import { Td, Tr } from "@chakra-ui/react";
+import { Td, Tr, Wrap, WrapItem } from "@chakra-ui/react";
 import Image from "next/image";
 
 type TokenInfoProps = {
     rank: number,
     icon: string,
     symbol: string,
-    marketCap: string,
+    marketCap: number,
     price: number,
     percentage_change: number
 }
@@ -13,24 +13,44 @@ type TokenInfoProps = {
 const TokenInfo: React.FC<TokenInfoProps> = ({ rank, icon, symbol, marketCap, price, percentage_change }) => {
     return (
         <>
-            <Tr>
-                <Td>{rank}</Td>
-                <Td><span>
+            <Td>{rank}</Td>
+            <Td>
+                <Wrap>
+                    <WrapItem>
                         <Image src={icon} alt={symbol} height={24} width={24} />
+                    </WrapItem>
+                    <WrapItem>
                         {symbol}
-                    </span>
-                    
-                    <span>{marketCap}</span>
-                </Td>
-                <Td>
-                    {price}
-                </Td>
-                <Td>
-                    {percentage_change}
-                </Td>
-            </Tr>
+                    </WrapItem>
+                </Wrap>
+
+                <Wrap>
+                    <WrapItem>
+                        {formatAsBillions(marketCap)}
+                    </WrapItem>
+                </Wrap>
+
+            </Td>
+            <Td>
+                {formatAsCurrency(price)}
+            </Td>
+            <Td>
+                {percentage_change}
+            </Td>
         </>
     )
+}
+
+function formatAsBillions(marketCap:number) {
+    return `${marketCap/1000000000} Bn`
+}
+
+function formatAsCurrency(price:number) {
+    let USDollar = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+    return USDollar.format(price);
 }
 
 export default TokenInfo;
