@@ -2,7 +2,7 @@
 import Image from "next/image";
 import TokenInfoTable from "../../components/token-info-table";
 import { useTokensStore } from "@/data/store";
-import { Link } from "@chakra-ui/react";
+import { Button, Link } from "@chakra-ui/react";
 import { useState } from "react";
 
 export default function MyTokens() {
@@ -20,7 +20,7 @@ export default function MyTokens() {
                 <div>No favourites data found</div>
             }
 
-            <Link href="/">View All Tokens</Link>
+            <Button colorScheme='blue'><Link href="/">View All Tokens</Link></Button>
         </>
     );
 }

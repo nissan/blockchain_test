@@ -3,7 +3,7 @@ import { CMCTokenInfo } from "@/data/cmcTokenInfo";
 import TokenInfoTable from "../components/token-info-table";
 import { mockData } from "@/data/mockData";
 import { useTokensStore } from "@/data/store";
-import { Link } from "@chakra-ui/react";
+import { Box, Button, Link, Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -23,7 +23,7 @@ export default function Home() {
     const fetchData = async () => {
       try {
         setLoading(true); // Begin loading
-        const limit="10";
+        const limit = "15";
         const response = await fetch(`/api/coinmarketcap/listing?limit=${limit}`,
           {
             method: 'GET', // Fetch API method
@@ -75,9 +75,20 @@ export default function Home() {
           <TokenInfoTable tokens={tokens} />
         </>
       }
-      {tokens.length === 0 && loading && <div>Loading...</div>}
+      {tokens.length === 0 && loading &&
+        <>
+          <table>
+            <tr>
+              <td><SkeletonText width="50px" /></td>
+              <td><SkeletonCircle size='10' /></td>
+              <td><SkeletonText width="200px" /></td>
+              <td><SkeletonText width="200px" /></td>
+            </tr>
+          </table>
+        </>
+      }
       {tokens.length === 0 && !loading && loaded && <div>No data found</div>}
-      <Link href="/my-tokens">View My Tokens</Link>
+      <Button colorScheme='blue'><Link href="/my-tokens">View My Tokens</Link></Button>
     </>
   );
 }
