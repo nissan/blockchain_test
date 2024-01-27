@@ -1,12 +1,12 @@
 # Instructions:
 Milestone 1:
 
-- [ ]  Create a card component and render static data.
+- [X]  Create a card component and render static data.
 
 Milestone 2:
 
-- [ ]  Make the card component reusable
-- [ ]  Render multiple cards with different data
+- [X]  Make the card component reusable
+- [X]  Render multiple cards with different data
 
 Milestone 3:
 
