@@ -21,7 +21,13 @@ export const useTokensStore = create(
         (set, get) => ({
             tokens: [],
             favTokenIds: [],
-            addToken: (token) => set((state) => ({ tokens: [...state.tokens, token] })),
+            addToken: (token) => set((state) => {
+                // Check if the token already exists in the array
+                const tokenExists = state.tokens.some(existingToken => existingToken.id === token.id);
+
+                // Only add the token if it doesn't already exist
+                return tokenExists ? state : { tokens: [...state.tokens, token] };
+            }),
             removeToken: (tokenId: number) => set((state) => ({ tokens: state.tokens.filter((token) => token.id !== tokenId) })),
             addFavToken: (tokenId: number) => set((state) => ({
                 favTokenIds: state.favTokenIds.includes(tokenId) ? state.favTokenIds : [...state.favTokenIds, tokenId],
