@@ -9,12 +9,12 @@ type TokenInfoProps = {
     rank: number,
     icon: string,
     symbol: string,
-    marketCap: number,
+    market_cap: number,
     price: number,
     percentage_change: number
 }
 
-const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, icon, symbol, marketCap, price, percentage_change }) => {
+const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, icon, symbol, market_cap, price, percentage_change }) => {
     const { favTokenIds, addFavToken, removeFavToken } = useTokensStore();
     // Check if the current token ID is in the list of favorite token IDs
     const isFav = favTokenIds.includes(id);
@@ -48,7 +48,8 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, icon, symbol, marketCap
                     </StatLabel>
 
                     <StatHelpText>
-                        {formatAsBillions(marketCap)}
+                        {/* {formatAsBillions(market_cap)} */}
+                        {market_cap}
                     </StatHelpText>
                 </Stat>
             </Td>
@@ -77,7 +78,8 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, icon, symbol, marketCap
     )
 }
 
-function formatAsBillions(marketCap: number) {
+function formatAsBillions(marketCap: number):string {
+    console.log(marketCap);
     return `${marketCap / 1000000000} Bn`
 }
 
