@@ -26,7 +26,7 @@ export const TokenInfoTable: React.FC<TokenInfoTableProps> = ({ tokens }) => {
                                 <TokenInfo
                                     id = {token.id}
                                     rank={token.cmc_rank}
-                                    icon={token.icon}
+                                    logo={token.logo}
                                     symbol={token.symbol}
                                     price={token.quote.USD.price}
                                     market_cap={token.quote.USD.market_cap}

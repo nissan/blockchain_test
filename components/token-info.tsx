@@ -7,14 +7,14 @@ import { FaStar as FilledStar, FaRegStar as EmptyStar } from 'react-icons/fa';
 type TokenInfoProps = {
     id: number,
     rank: number,
-    icon: string,
+    logo: string,
     symbol: string,
     market_cap: number,
     price: number,
     percentage_change: number
 }
 
-const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, icon, symbol, market_cap, price, percentage_change }) => {
+const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, logo, symbol, market_cap, price, percentage_change }) => {
     const { favTokenIds, addFavToken, removeFavToken } = useTokensStore();
     // Check if the current token ID is in the list of favorite token IDs
     const isFav = favTokenIds.includes(id);
@@ -39,7 +39,7 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, icon, symbol, market_ca
                     <StatLabel>
                         <Wrap>
                             <WrapItem>
-                                <Image src={icon} alt={symbol} height={24} width={24} />
+                                <Image src={logo} alt={symbol} height={24} width={24} />
                             </WrapItem>
                             <WrapItem>
                                 {symbol}
@@ -48,8 +48,8 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, icon, symbol, market_ca
                     </StatLabel>
 
                     <StatHelpText>
-                        {/* {formatAsBillions(market_cap)} */}
-                        {market_cap}
+                        {formatAsBillions(market_cap)}
+                        {/* {market_cap} */}
                     </StatHelpText>
                 </Stat>
             </Td>
@@ -78,9 +78,8 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, icon, symbol, market_ca
     )
 }
 
-function formatAsBillions(marketCap: number):string {
-    console.log(marketCap);
-    return `${marketCap / 1000000000} Bn`
+function formatAsBillions(marketCap: number):string {    
+    return `${(marketCap / 1000000000).toFixed(2)} Bn`
 }
 
 function formatAsCurrency(price: number) {
