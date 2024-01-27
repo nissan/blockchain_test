@@ -15,16 +15,22 @@ type TokenInfoProps = {
 }
 
 const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, icon, symbol, marketCap, price, percentage_change }) => {
-    const { favTokenIds } = useTokensStore();
+    const { favTokenIds, addFavToken, removeFavToken } = useTokensStore();
     // Check if the current token ID is in the list of favorite token IDs
     const isFav = favTokenIds.includes(id);
+    const handleRemoveFav = () => {
+        removeFavToken(id);
+    };
+    const handleAddFav = () => {
+        addFavToken(id);
+    }
     return (
         <>
             <Td>
                 {isFav ? (
-                    <Icon as={FilledStar} color="yellow.500" w={6} h={6} />
+                    <Icon as={FilledStar} color="yellow.500" w={6} h={6} onClick={handleRemoveFav} cursor="pointer" />
                 ) : (
-                    <Icon as={EmptyStar} w={6} h={6} />
+                    <Icon as={EmptyStar} w={6} h={6} onClick={handleAddFav} cursor="pointer" />
                 )}
             </Td>
             <Td>{rank}</Td>
