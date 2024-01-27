@@ -2,14 +2,14 @@
 import Image from "next/image";
 import TokenInfoTable from "./components/token-info-table";
 import { mockData } from "@/data/mockData";
-import { useAllTokensStore } from "@/data/store";
+import { useTokensStore } from "@/data/store";
 import { Link } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const { tokens, addToken, removeToken } = useAllTokensStore();
+  const { tokens, addToken, removeToken, addFavToken, favTokenIds } = useTokensStore();
   useEffect(() => {
     setLoading(true);
     mockData.forEach(data => {
@@ -18,8 +18,10 @@ export default function Home() {
         // so remove the old one and add again
         removeToken(data.id);
       }
-      addToken(data)
+      addToken(data);
     });
+    //console.log(JSON.stringify(tokens));
+    console.log(JSON.stringify(favTokenIds));
     setLoading(false);
     setLoaded(true);
   }, [loaded])
