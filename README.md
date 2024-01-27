@@ -17,7 +17,7 @@ Milestone 3:
 
 Milestone 4:
 
-- [ ]  Use the Coin Market Cap API (or similar) to pull dynamic data, limit the amount returned to 10 or 20, don’t worry about pagination.
+- [X]  Use the Coin Market Cap API (or similar) to pull dynamic data, limit the amount returned to 10 or 20, don’t worry about pagination.
 - Here's the link to the docs: https://coinmarketcap.com/api/documentation/v1/
 - Specifically this endpoint should be pretty handy: https://coinmarketcap.com/api/documentation/v1/#operation/getV1CryptocurrencyListingsLatest
 - Here’s an API key: `0cb61b43-fe49-42ce-8e3a-e030fb104f24`

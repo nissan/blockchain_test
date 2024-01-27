@@ -1,6 +1,6 @@
-import { CMCTokenInfo } from "./cmcTokenInfo";
+// import { CMCTokenInfo } from "./cmcTokenInfo";
 
-export const mockData: CMCTokenInfo[] = [
+export const mockData = [
   {
     id: 1,
     cmc_rank: 1,
