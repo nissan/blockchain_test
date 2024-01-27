@@ -2,6 +2,7 @@ export type CMCTokenInfo = {
   id: number;
   name: string;
   symbol: string;
+  logo: string;
   slug: string;
   num_market_pairs: number;
   date_added: Date;
