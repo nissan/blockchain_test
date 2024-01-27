@@ -20,7 +20,7 @@ export const useTokensStore = create(
     persist<TokensStore>(
         (set, get) => ({
             tokens: [],
-            favTokenIds: [1,2],
+            favTokenIds: [],
             addToken: (token) => set((state) => ({ tokens: [...state.tokens, token] })),
             removeToken: (tokenId: number) => set((state) => ({ tokens: state.tokens.filter((token) => token.id !== tokenId) })),
             addFavToken: (tokenId: number) => set((state) => ({
