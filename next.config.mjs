@@ -1,8 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ['s2.coinmarketcap.com'],
-      }
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 's2.coinmarketcap.com',
+        pathname: '/static/img/coins/64x64/*',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

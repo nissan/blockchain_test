@@ -1,7 +1,11 @@
-import { Stat, StatArrow, StatHelpText, StatLabel, Td, Tr, Wrap, WrapItem } from "@chakra-ui/react";
+import { useTokensStore } from "@/data/store";
+import { Icon, Stat, StatArrow, StatHelpText, StatLabel, Td, Tr, Wrap, WrapItem } from "@chakra-ui/react";
 import Image from "next/image";
+import { FaStar as FilledStar, FaRegStar as EmptyStar } from 'react-icons/fa';
+
 
 type TokenInfoProps = {
+    id: number,
     rank: number,
     icon: string,
     symbol: string,
@@ -10,9 +14,25 @@ type TokenInfoProps = {
     percentage_change: number
 }
 
-const TokenInfo: React.FC<TokenInfoProps> = ({ rank, icon, symbol, marketCap, price, percentage_change }) => {
+const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, icon, symbol, marketCap, price, percentage_change }) => {
+    const { favTokenIds, addFavToken, removeFavToken } = useTokensStore();
+    // Check if the current token ID is in the list of favorite token IDs
+    const isFav = favTokenIds.includes(id);
+    const handleRemoveFav = () => {
+        removeFavToken(id);
+    };
+    const handleAddFav = () => {
+        addFavToken(id);
+    }
     return (
         <>
+            <Td>
+                {isFav ? (
+                    <Icon as={FilledStar} color="yellow.500" w={6} h={6} onClick={handleRemoveFav} cursor="pointer" />
+                ) : (
+                    <Icon as={EmptyStar} w={6} h={6} onClick={handleAddFav} cursor="pointer" />
+                )}
+            </Td>
             <Td>{rank}</Td>
             <Td>
                 <Stat>
@@ -38,20 +58,20 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ rank, icon, symbol, marketCap, pr
             <Td>
                 <Stat>
                     <StatHelpText>
-                    {(percentage_change > 0) && <>
-                    <StatArrow type="increase" />
-                        {percentage_change}%
-                    </>}
-                    {(percentage_change < 0) && <>
-                    <StatArrow type="decrease" />
-                        {percentage_change}%
-                    </>}
-                    {(percentage_change == 0) && <>
-                        {percentage_change}%
-                    </>}
+                        {(percentage_change > 0) && <>
+                            <StatArrow type="increase" />
+                            {percentage_change}%
+                        </>}
+                        {(percentage_change < 0) && <>
+                            <StatArrow type="decrease" />
+                            {percentage_change}%
+                        </>}
+                        {(percentage_change == 0) && <>
+                            {percentage_change}%
+                        </>}
                     </StatHelpText>
                 </Stat>
-                
+
             </Td>
         </>
     )
