@@ -10,7 +10,7 @@ Milestone 2:
 
 Milestone 3:
 
-- [ ]  Create a new “My Tokens” page
+- [X]  Create a new “My Tokens” page
 - [ ]  When clicking a card on the home page, add it to your “My Tokens” list
 - [ ]  Navigating to your My Tokens page should show you all your favourited tokens
 - [ ]  Use Zustand to persist the data across page loads
