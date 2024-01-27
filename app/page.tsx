@@ -3,8 +3,9 @@ import { CMCTokenInfo } from "@/data/cmcTokenInfo";
 import TokenInfoTable from "../components/token-info-table";
 import { mockData } from "@/data/mockData";
 import { useTokensStore } from "@/data/store";
-import { Box, Button, Link, Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import { Center, Heading, Button, Link, Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
@@ -70,6 +71,14 @@ export default function Home() {
   }, [])
   return (
     <>
+      <Center bg='purple.700' h='100px' color='white'>
+        <Heading pr="5">
+          Top 10 Tokens By MarketCap
+        </Heading>
+        {" "}
+        <Button colorScheme='blue'><Link href="/my-tokens">View My Favourite Tokens</Link></Button>
+      </Center>
+      
       {tokens.length > 0 &&
         <>
           <TokenInfoTable tokens={tokens} />
@@ -88,7 +97,7 @@ export default function Home() {
         </>
       }
       {tokens.length === 0 && !loading && loaded && <div>No data found</div>}
-      <Button colorScheme='blue'><Link href="/my-tokens">View My Tokens</Link></Button>
+
     </>
   );
 }
