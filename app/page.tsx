@@ -1,6 +1,6 @@
-"use client";
-import Image from "next/image";
-import TokenInfoTable from "./components/token-info-table";
+"use client"
+import { CMCTokenInfo } from "@/data/cmcTokenInfo";
+import TokenInfoTable from "../components/token-info-table";
 import { mockData } from "@/data/mockData";
 import { useTokensStore } from "@/data/store";
 import { Link } from "@chakra-ui/react";
@@ -12,28 +12,63 @@ export default function Home() {
   const { tokens, addToken, removeToken, addFavToken, favTokenIds } = useTokensStore();
   useEffect(() => {
     setLoading(true);
-    mockData.forEach(data => {
-      if (tokens.find(token => token.id===data.id)){
-        //assume the new data is more updated than the old data for now, 
-        // so remove the old one and add again
-        removeToken(data.id);
+    const fetchLogo = async (symbol: string) => {
+      const response = await fetch(`api/coinmarketcap/info?symbol=${symbol}`)
+      const jsonData = await response.json();
+    }
+    const fetchData = async () => {
+      try {
+        setLoading(true); // Begin loading
+        const response = await fetch('/api/coinmarketcap/listing',
+          {
+            method: 'GET', // Fetch API method
+          });
+        const jsonData = await response.json();
+        const data = jsonData.data.data;
+        if (data) {
+          data.forEach((cmcToken: CMCTokenInfo) => {
+            const {
+              id,
+              cmc_rank,
+              name,
+              symbol,
+              quote,
+              circulating_supply,
+              total_supply,
+              max_supply,
+              num_market_pairs,
+            } = cmcToken;
+
+
+            if (tokens.find(token => token.id === cmcToken.id)) {
+              // assume new data is more updated than the current data
+              // so remove the old one and add again
+              removeToken(cmcToken.id)
+            }
+            addToken(cmcToken);
+          })
+        }
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+        // Optionally, update state to indicate error, show error messages, etc.
+      } finally {
+        setLoading(false);
+        setLoaded(true);
+        // End loading
       }
-      addToken(data);
-    });
-    //console.log(JSON.stringify(tokens));
-    console.log(JSON.stringify(favTokenIds));
-    setLoading(false);
-    setLoaded(true);
-  }, [loaded])
+    };
+    fetchData();
+
+  }, [])
   return (
     <>
-      {tokens.length>0 &&
+      {tokens.length > 0 &&
         <>
           <TokenInfoTable tokens={tokens} />
         </>
       }
-      {tokens.length===0 && loading && <div>Loading...</div>}
-      {tokens.length===0 && !loading && loaded && <div>No data found</div>}
+      {tokens.length === 0 && loading && <div>Loading...</div>}
+      {tokens.length === 0 && !loading && loaded && <div>No data found</div>}
       <Link href="/my-tokens">View My Tokens</Link>
     </>
   );
