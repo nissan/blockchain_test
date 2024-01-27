@@ -14,19 +14,24 @@ export default function Home() {
     setLoading(true);
     const fetchLogo = async (symbol: string) => {
       const response = await fetch(`api/coinmarketcap/info?symbol=${symbol}`)
-      const jsonData = await response.json();
+      const json = await response.json();
+      const jsonData = json.data;
+      const logo = jsonData.data[symbol].logo;
+      return logo;
+
     }
     const fetchData = async () => {
       try {
         setLoading(true); // Begin loading
-        const response = await fetch('/api/coinmarketcap/listing',
+        const limit="10";
+        const response = await fetch(`/api/coinmarketcap/listing?limit=${limit}`,
           {
             method: 'GET', // Fetch API method
           });
         const jsonData = await response.json();
         const data = jsonData.data.data;
         if (data) {
-          data.forEach((cmcToken: CMCTokenInfo) => {
+          data.forEach(async (cmcToken: CMCTokenInfo) => {
             const {
               id,
               cmc_rank,
@@ -38,6 +43,9 @@ export default function Home() {
               max_supply,
               num_market_pairs,
             } = cmcToken;
+
+            cmcToken.logo = await fetchLogo(cmcToken.symbol);
+
 
 
             if (tokens.find(token => token.id === cmcToken.id)) {
