@@ -3,7 +3,7 @@ export async function GET(request: Request) {
     const url = new URL(request.url);
     const symbol = url.searchParams.get("symbol");
     
-    const res = await fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/info', {
+    const res = await fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/info?symbol=${symbol}`, {
     method: "GET",
     headers: {
       'Content-Type': 'application/json',
