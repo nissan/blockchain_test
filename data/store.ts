@@ -10,7 +10,7 @@ type TokenStore = {
 };
 
 
-export const useAllTokenStore = create<TokenStore>((set) => ({
+export const useAllTokensStore = create<TokenStore>((set) => ({
     tokens: [], // Initial state of tokens is an empty array
     addToken: (token) =>
       set((state) => ({
@@ -22,7 +22,7 @@ export const useAllTokenStore = create<TokenStore>((set) => ({
       })),
   }));
 
-  export const useFavTokenStore = create<TokenStore>((set) => ({
+  export const useFavTokensStore = create<TokenStore>((set) => ({
     tokens: [], // Initial state of tokens is an empty array
     addToken: (token) =>
       set((state) => ({

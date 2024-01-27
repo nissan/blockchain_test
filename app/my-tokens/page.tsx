@@ -3,7 +3,7 @@ import TokenInfoTable from "../components/token-info-table";
 import { mockData } from "@/data/mockData";
 import { Link } from "@chakra-ui/react";
 
-export default function Home() {
+export default function MyTokens() {
     return (
         <>
             <TokenInfoTable tokens={mockData} />
