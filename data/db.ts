@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 export const MONGODB_URI = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_SERVER}/?retryWrites=true&w=majority`;
+export const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
+
 let cached = { conn: null as any, promise: null as any };
 async function dbConnect() {
     if (cached.conn) {
