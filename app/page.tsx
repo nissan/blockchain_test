@@ -19,6 +19,7 @@ export default function Home() {
             method: "GET"
           })
         const json = await response.json();
+        console.log(`Response received: ${JSON.stringify(json)} for userId ${userId}`)
         return json.data as number[];
       }
       catch (error) {
