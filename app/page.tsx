@@ -79,7 +79,7 @@ export default function Home() {
     };
     fetchData();
 
-  }, [])
+  }, [addToken, removeToken, setFavTokenIds, setUserId, tokens, userId])
   return (
     <>
       <Center bg='purple.700' h='100px' color='white'>
@@ -98,12 +98,14 @@ export default function Home() {
       {tokens.length === 0 && loading &&
         <>
           <table>
+            <tbody>
             <tr>
               <td><SkeletonText width="50px" /></td>
               <td><SkeletonCircle size='10' /></td>
               <td><SkeletonText width="200px" /></td>
               <td><SkeletonText width="200px" /></td>
             </tr>
+            </tbody>
           </table>
         </>
       }
