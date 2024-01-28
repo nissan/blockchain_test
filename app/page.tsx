@@ -12,8 +12,8 @@ export default function Home() {
   const { tokens, addToken, removeToken, userId, setUserId, setFavTokenIds } = useTokensStore();
   useEffect(() => {
     setLoading(true);
-    const fetchFavTokenIds = async(userId: string)=>{
-      return[] as number[];
+    const fetchFavTokenIds = async (userId: string) => {
+      return [] as number[];
     }
     const fetchLogo = async (symbol: string) => {
       const response = await fetch(`api/coinmarketcap/info?symbol=${symbol}`)
@@ -58,12 +58,14 @@ export default function Home() {
             }
             addToken(cmcToken);
           })
-          if (!userId || userId == undefined){
-            setUserId(uuidv4());
+          if (userId && userId.length>0) {
+            const storedFavTokenIds = await fetchFavTokenIds(userId);
+            if (storedFavTokenIds) {
+              setFavTokenIds(storedFavTokenIds);
+            }
           }
-          const storedFavTokenIds = await fetchFavTokenIds(userId);
-          if (storedFavTokenIds){
-            setFavTokenIds(storedFavTokenIds);
+          if (!userId || userId == undefined) {
+            setUserId(uuidv4());
           }
         }
       } catch (error) {
@@ -87,7 +89,7 @@ export default function Home() {
         {" "}
         <Button colorScheme='blue'><Link href="/my-tokens">View My Favourite Tokens</Link></Button>
       </Center>
-      
+
       {tokens.length > 0 &&
         <>
           <TokenInfoTable tokens={tokens} />
