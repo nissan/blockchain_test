@@ -1,18 +1,20 @@
 "use client"
 import { CMCTokenInfo } from "@/data/cmcTokenInfo";
 import TokenInfoTable from "../components/token-info-table";
-import { mockData } from "@/data/mockData";
 import { useTokensStore } from "@/data/store";
 import { Center, Heading, Button, Link, Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const { tokens, addToken, removeToken, addFavToken, favTokenIds } = useTokensStore();
+  const { tokens, addToken, removeToken, userId, setUserId, setFavTokenIds } = useTokensStore();
   useEffect(() => {
     setLoading(true);
+    const fetchFavTokenIds = async(userId: string)=>{
+      return[] as number[];
+    }
     const fetchLogo = async (symbol: string) => {
       const response = await fetch(`api/coinmarketcap/info?symbol=${symbol}`)
       const json = await response.json();
@@ -56,6 +58,13 @@ export default function Home() {
             }
             addToken(cmcToken);
           })
+          if (!userId || userId == undefined){
+            setUserId(uuidv4());
+          }
+          const storedFavTokenIds = await fetchFavTokenIds(userId);
+          if (storedFavTokenIds){
+            setFavTokenIds(storedFavTokenIds);
+          }
         }
       } catch (error) {
         console.error("Failed to fetch data:", error);
