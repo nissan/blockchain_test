@@ -73,7 +73,7 @@ export default function Home() {
     <>
       <Center bg='purple.700' h='100px' color='white'>
         <Heading pr="5">
-          Top 10 Tokens By MarketCap
+          Top Tokens By MarketCap
         </Heading>
         {" "}
         <Button colorScheme='blue'><Link href="/my-tokens">View My Favourite Tokens</Link></Button>
