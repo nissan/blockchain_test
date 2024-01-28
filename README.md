@@ -24,7 +24,7 @@ Milestone 4:
 
 Milestone 5:
 
-- [ ]  Instead of using zustand to persist state, implement Mongo DB to store your “My Tokens” data.
+- [X]  Instead of using zustand to persist state, implement Mongo DB to store your “My Tokens” data.
 
 Milestone 6:
 

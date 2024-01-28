@@ -1,4 +1,3 @@
-import { connect, UserFavTokens } from "@/data/db";
 import { useTokensStore } from "@/data/store";
 import { Icon, Stat, StatArrow, StatHelpText, StatLabel, Td, Tr, Wrap, WrapItem } from "@chakra-ui/react";
 import Image from "next/image";
@@ -19,25 +18,36 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, logo, symbol, market_ca
     const { userId, favTokenIds, addFavToken, removeFavToken } = useTokensStore();
     // Check if the current token ID is in the list of favorite token IDs
     const isFav = favTokenIds.includes(id);
-    const handleRemoveFav = () => {
-        removeFavToken(id);
+    const handleRemoveFav = async () => {
+        //remove from the database, then update the store
+
+        try {
+            removeFavToken(id);
+            const response = await fetch(`api/favTokens`,
+                {
+                    method: "DELETE",
+                    body: JSON.stringify({userId, id})
+                })
+            const json = await response.json();
+
+        } catch (error) {
+            console.error('Error deleting user fav token:', error);
+        }
     };
     const handleAddFav = async () => {
         //inject to the database, then update the store
         try {
-            // await connect();
-            // // Find the document for the user or create it if it doesn't exist
-            // const userFavTokens = await UserFavTokens.findOneAndUpdate(
-            //   { userId },
-            //   { $addToSet: { favTokenIds: id } }, // Use $addToSet to add the token ID without creating duplicates
-            //   { new: true, upsert: true } // Options to return the updated document and create a new one if it doesn't exist
-            // );
-            // console.log('Updated user fav tokens:', userFavTokens);
             addFavToken(id); //update the state as well
+            const response = await fetch(`api/favTokens`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({userId, id})
+                })
+            const json = await response.json();
 
-          } catch (error) {
-            console.error('Error updating user fav tokens:', error);
-          }
+        } catch (error) {
+            console.error('Error adding user fav token:', error);
+        }
     }
     return (
         <>
@@ -93,7 +103,7 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, logo, symbol, market_ca
     )
 }
 
-function formatAsBillions(marketCap: number):string {    
+function formatAsBillions(marketCap: number): string {
     return `${(marketCap / 1000000000).toFixed(2)} Bn`
 }
 

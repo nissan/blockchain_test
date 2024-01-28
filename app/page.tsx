@@ -13,13 +13,24 @@ export default function Home() {
   useEffect(() => {
     setLoading(true);
     const fetchFavTokenIds = async (userId: string) => {
-      return [] as number[];
+      try {
+        const response = await fetch(`api/favTokens?userId=${userId}`,
+          {
+            method: "GET"
+          })
+        const json = await response.json();
+        console.log(`Response received: ${JSON.stringify(json)} for userId ${userId}`)
+        return json.data as number[];
+      }
+      catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
     }
     const fetchLogo = async (symbol: string) => {
       const response = await fetch(`api/coinmarketcap/info?symbol=${symbol}`)
       const json = await response.json();
       const jsonData = json.data;
-      const logo = jsonData.data[symbol].logo;
+      const logo = jsonData.data ? jsonData.data[symbol].logo : "";
       return logo;
 
     }
@@ -53,12 +64,18 @@ export default function Home() {
 
             if (tokens.find(token => token.id === cmcToken.id)) {
               // assume new data is more updated than the current data
-              // so remove the old one and add again
-              removeToken(cmcToken.id)
+              // so remove the old one and add again only if logo isn't blank
+
+              // note check to make sure it's got a logo first
+              if (cmcToken.logo) {
+                removeToken(cmcToken.id)
+              }
             }
-            addToken(cmcToken);
+            if (cmcToken.logo) {
+              addToken(cmcToken);
+            }
           })
-          if (userId && userId.length>0) {
+          if (userId && userId.length > 0) {
             const storedFavTokenIds = await fetchFavTokenIds(userId);
             if (storedFavTokenIds) {
               setFavTokenIds(storedFavTokenIds);
@@ -79,7 +96,7 @@ export default function Home() {
     };
     fetchData();
 
-  }, [addToken, removeToken, setFavTokenIds, setUserId, tokens, userId])
+  }, [])
   return (
     <>
       <Center bg='purple.700' h='100px' color='white'>
@@ -99,12 +116,12 @@ export default function Home() {
         <>
           <table>
             <tbody>
-            <tr>
-              <td><SkeletonText width="50px" /></td>
-              <td><SkeletonCircle size='10' /></td>
-              <td><SkeletonText width="200px" /></td>
-              <td><SkeletonText width="200px" /></td>
-            </tr>
+              <tr>
+                <td><SkeletonText width="50px" /></td>
+                <td><SkeletonCircle size='10' /></td>
+                <td><SkeletonText width="200px" /></td>
+                <td><SkeletonText width="200px" /></td>
+              </tr>
             </tbody>
           </table>
         </>
