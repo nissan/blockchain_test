@@ -5,12 +5,15 @@ import { create } from 'zustand';
 
 
 type TokensStore = {
+    userId: string;
     tokens: CMCTokenInfo[];
     favTokenIds: number[];
     addToken: (token: CMCTokenInfo) => void;
     removeToken: (tokenId: number) => void;
     addFavToken: (tokenId: number) => void;
     removeFavToken: (tokenId: number) => void;
+    setUserId: (userId:string) => void;
+    setFavTokenIds: (tokenIds: number[]) => void;
 
 };
 
@@ -19,6 +22,7 @@ const storage = createJSONStorage(() => sessionStorage);
 export const useTokensStore = create(
     persist<TokensStore>(
         (set, get) => ({
+            userId:"",
             tokens: [],
             favTokenIds: [],
             addToken: (token) => set((state) => {
@@ -35,6 +39,10 @@ export const useTokensStore = create(
             removeFavToken: (tokenId) => set((state) => ({
                 favTokenIds: state.favTokenIds.filter((id) => id !== tokenId),
             })),
+            setUserId: (userId) => set((state) => ({userId: userId})),
+            setFavTokenIds: (tokenIds) => set((state) => ({
+                favTokenIds: tokenIds
+            }))
         }),
         {
             name: 'token-storage', // name of the item in the storage (must be unique)

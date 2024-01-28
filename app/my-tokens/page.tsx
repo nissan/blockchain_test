@@ -2,7 +2,7 @@
 import Image from "next/image";
 import TokenInfoTable from "../../components/token-info-table";
 import { useTokensStore } from "@/data/store";
-import { Link } from "@chakra-ui/react";
+import { Button, Center, Heading, Link } from "@chakra-ui/react";
 import { useState } from "react";
 
 export default function MyTokens() {
@@ -12,6 +12,13 @@ export default function MyTokens() {
     const favTokens = tokens.filter((token) => favTokenIds.includes(token.id));
     return (
         <>
+            <Center bg='blue.700' h='100px' color='white'>
+                <Heading pr="5">
+                   My Favourite Tokens
+                </Heading>
+                {"      "}
+                <Button colorScheme='blue'><Link href="/">View All Tokens</Link></Button>
+            </Center>
             {favTokens.length > 0 ?
                 <>
                     <TokenInfoTable tokens={favTokens} />
@@ -20,7 +27,7 @@ export default function MyTokens() {
                 <div>No favourites data found</div>
             }
 
-            <Link href="/">View All Tokens</Link>
+           
         </>
     );
 }

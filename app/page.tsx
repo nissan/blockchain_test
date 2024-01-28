@@ -1,17 +1,20 @@
 "use client"
 import { CMCTokenInfo } from "@/data/cmcTokenInfo";
 import TokenInfoTable from "../components/token-info-table";
-import { mockData } from "@/data/mockData";
 import { useTokensStore } from "@/data/store";
-import { Link } from "@chakra-ui/react";
+import { Center, Heading, Button, Link, Skeleton, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const { tokens, addToken, removeToken, addFavToken, favTokenIds } = useTokensStore();
+  const { tokens, addToken, removeToken, userId, setUserId, setFavTokenIds } = useTokensStore();
   useEffect(() => {
     setLoading(true);
+    const fetchFavTokenIds = async (userId: string) => {
+      return [] as number[];
+    }
     const fetchLogo = async (symbol: string) => {
       const response = await fetch(`api/coinmarketcap/info?symbol=${symbol}`)
       const json = await response.json();
@@ -23,7 +26,7 @@ export default function Home() {
     const fetchData = async () => {
       try {
         setLoading(true); // Begin loading
-        const limit="10";
+        const limit = "15";
         const response = await fetch(`/api/coinmarketcap/listing?limit=${limit}`,
           {
             method: 'GET', // Fetch API method
@@ -55,6 +58,15 @@ export default function Home() {
             }
             addToken(cmcToken);
           })
+          if (userId && userId.length>0) {
+            const storedFavTokenIds = await fetchFavTokenIds(userId);
+            if (storedFavTokenIds) {
+              setFavTokenIds(storedFavTokenIds);
+            }
+          }
+          if (!userId || userId == undefined) {
+            setUserId(uuidv4());
+          }
         }
       } catch (error) {
         console.error("Failed to fetch data:", error);
@@ -67,17 +79,38 @@ export default function Home() {
     };
     fetchData();
 
-  }, [])
+  }, [addToken, removeToken, setFavTokenIds, setUserId, tokens, userId])
   return (
     <>
+      <Center bg='purple.700' h='100px' color='white'>
+        <Heading pr="5">
+          Top Tokens By MarketCap
+        </Heading>
+        {" "}
+        <Button colorScheme='blue'><Link href="/my-tokens">View My Favourite Tokens</Link></Button>
+      </Center>
+
       {tokens.length > 0 &&
         <>
           <TokenInfoTable tokens={tokens} />
         </>
       }
-      {tokens.length === 0 && loading && <div>Loading...</div>}
+      {tokens.length === 0 && loading &&
+        <>
+          <table>
+            <tbody>
+            <tr>
+              <td><SkeletonText width="50px" /></td>
+              <td><SkeletonCircle size='10' /></td>
+              <td><SkeletonText width="200px" /></td>
+              <td><SkeletonText width="200px" /></td>
+            </tr>
+            </tbody>
+          </table>
+        </>
+      }
       {tokens.length === 0 && !loading && loaded && <div>No data found</div>}
-      <Link href="/my-tokens">View My Tokens</Link>
+
     </>
   );
 }
