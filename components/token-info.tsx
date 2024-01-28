@@ -1,3 +1,4 @@
+import { connect, UserFavTokens } from "@/data/db";
 import { useTokensStore } from "@/data/store";
 import { Icon, Stat, StatArrow, StatHelpText, StatLabel, Td, Tr, Wrap, WrapItem } from "@chakra-ui/react";
 import Image from "next/image";
@@ -15,14 +16,28 @@ type TokenInfoProps = {
 }
 
 const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, logo, symbol, market_cap, price, percentage_change }) => {
-    const { favTokenIds, addFavToken, removeFavToken } = useTokensStore();
+    const { userId, favTokenIds, addFavToken, removeFavToken } = useTokensStore();
     // Check if the current token ID is in the list of favorite token IDs
     const isFav = favTokenIds.includes(id);
     const handleRemoveFav = () => {
         removeFavToken(id);
     };
-    const handleAddFav = () => {
-        addFavToken(id);
+    const handleAddFav = async () => {
+        //inject to the database, then update the store
+        try {
+            // await connect();
+            // // Find the document for the user or create it if it doesn't exist
+            // const userFavTokens = await UserFavTokens.findOneAndUpdate(
+            //   { userId },
+            //   { $addToSet: { favTokenIds: id } }, // Use $addToSet to add the token ID without creating duplicates
+            //   { new: true, upsert: true } // Options to return the updated document and create a new one if it doesn't exist
+            // );
+            // console.log('Updated user fav tokens:', userFavTokens);
+            addFavToken(id); //update the state as well
+
+          } catch (error) {
+            console.error('Error updating user fav tokens:', error);
+          }
     }
     return (
         <>
