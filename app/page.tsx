@@ -11,12 +11,19 @@ export default function Home() {
   const [loaded, setLoaded] = useState(false);
   const { tokens, addToken, removeToken, userId, setUserId, setFavTokenIds } = useTokensStore();
   useEffect(() => {
-    console.log("Running useEffect...")
     setLoading(true);
     const fetchFavTokenIds = async (userId: string) => {
-        const response = await fetch(`api/favTokens?userId=${userId}`)
+      try {
+        const response = await fetch(`api/favTokens?userId=${userId}`,
+          {
+            method: "GET"
+          })
         const json = await response.json();
-      return json.data as number[];
+        return json.data as number[];
+      }
+      catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
     }
     const fetchLogo = async (symbol: string) => {
       const response = await fetch(`api/coinmarketcap/info?symbol=${symbol}`)

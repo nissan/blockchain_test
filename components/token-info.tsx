@@ -23,10 +23,10 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, logo, symbol, market_ca
 
         try {
             removeFavToken(id);
-            const response = await fetch(`api/favTokens?userId=${userId}`,
+            const response = await fetch(`api/favTokens`,
                 {
                     method: "DELETE",
-                    body: JSON.stringify(id)
+                    body: JSON.stringify({userId, id})
                 })
             const json = await response.json();
 
@@ -38,10 +38,10 @@ const TokenInfo: React.FC<TokenInfoProps> = ({ id, rank, logo, symbol, market_ca
         //inject to the database, then update the store
         try {
             addFavToken(id); //update the state as well
-            const response = await fetch(`api/favTokens?userId=${userId}`,
+            const response = await fetch(`api/favTokens`,
                 {
                     method: "POST",
-                    body: JSON.stringify(id)
+                    body: JSON.stringify({userId, id})
                 })
             const json = await response.json();
 
