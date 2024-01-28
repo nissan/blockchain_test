@@ -3,6 +3,7 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const limit = url.searchParams.get("limit");
   const res = await fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?sort=market_cap&limit=${limit}`, {
+    next: { revalidate: 3600 },
     method: "GET",
     headers: {
       'Content-Type': 'application/json',

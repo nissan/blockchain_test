@@ -4,6 +4,7 @@ export async function GET(request: Request) {
     const symbol = url.searchParams.get("symbol");
     
     const res = await fetch(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/info?symbol=${symbol}`, {
+    next: { revalidate: 3600 },
     method: "GET",
     headers: {
       'Content-Type': 'application/json',
